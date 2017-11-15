@@ -32,3 +32,5 @@ RUN date -u > BUILD_TIME
 
 # Start up
 EXPOSE 3000
+
+CMD [ "bundle", "exec", "rails", "s" ]
