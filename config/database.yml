@@ -83,6 +83,5 @@ test:
 #
 production:
   <<: *default
-  database: docker-demo_production
-  username: docker-demo
-  password: <%= ENV['DOCKER-DEMO_DATABASE_PASSWORD'] %>
+  database: docker_demo_production
+  url: <%= ENV['DATABASE_URL'] %>

@@ -16,6 +16,9 @@ ADD Gemfile* /home/app/
 ADD docker /home/app/docker/
 RUN bundle install
 
+# Precompile assets
+RUN RAILS_ENV=production bundle exec rake assets:precompile --trace
+
 # Add the Rails app
 ADD . /home/app
 
@@ -23,9 +26,6 @@ ADD . /home/app
 RUN groupadd --gid 9999 app && \
     useradd --uid 9999 --gid app app && \
 chown -R app:app /home/app
-
-# Precompile assets
-RUN RAILS_ENV=production bundle exec rake assets:precompile --trace
 
 # Save timestamp of image building
 RUN date -u > BUILD_TIME
