@@ -17,17 +17,20 @@ services:
     image: redis:4.0-alpine
 
   app: &app_base
-    image: docker_demo:latest
+    image: docker_demo:v01
     command: bundle exec rails s
     environment:
-      - RACK_ENV=development
-      - RAILS_ENV=development
+      - RACK_ENV=production
+      - RAILS_ENV=production
       - REDIS_CABLE_URL=redis://redis:6379/1
       - MEMCACHED_HOST=memcached
       - DB_HOST=db
       - POSTGRES_DATABASE=docker_demo_development
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
+      - DATABASE_URL=postgres://db:5432/docker_demo_production
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - RAILS_SERVE_STATIC_FILES=true
     ports:
       - "3000:3000"
     links:
