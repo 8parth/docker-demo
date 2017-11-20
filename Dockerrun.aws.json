@@ -103,6 +103,6 @@
         "hostname": "web",
         "privileged": false,
         "memory": 128
-    },
+    }
   ]
 }
