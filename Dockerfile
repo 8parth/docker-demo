@@ -30,7 +30,14 @@ chown -R app:app /home/app
 # Save timestamp of image building
 RUN date -u > BUILD_TIME
 
-# Start up
+ENV RAILS_LOG_TO_STDOUT true
+ENV RAILS_SERVE_STATIC_FILES false
+
+# RUN mkdir -p /etc/nginx/conf.d/
+# COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+RUN chmod +x docker/entrypoint.sh
+ENV APPNAME docker_demo
+
 EXPOSE 3000
 
-CMD [ "bundle", "exec", "rails", "s" ]
+CMD [ "docker/entrypoint.sh" ]

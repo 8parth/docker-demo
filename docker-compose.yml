@@ -17,26 +17,38 @@ services:
     image: redis:4.0-alpine
 
   app: &app_base
-    image: docker_demo:v01
-    command: bundle exec rails s
+    image: parthmodi/docker_demo:v06
     environment:
       - RACK_ENV=production
       - RAILS_ENV=production
       - REDIS_CABLE_URL=redis://redis:6379/1
       - MEMCACHED_HOST=memcached
       - DB_HOST=db
-      - POSTGRES_DATABASE=docker_demo_development
+      - POSTGRES_DATABASE=docker_demo_production
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - DATABASE_URL=postgres://db:5432/docker_demo_production
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-      - RAILS_SERVE_STATIC_FILES=true
+      - SECRET_KEY_BASE
+      - VIRTUAL_HOST=docker_demo.docker
+      - VIRTUAL_PORT=3000
+    volumes:
+      - "app-data:/home/app" 
     ports:
       - "3000:3000"
     links:
       - db
       - redis
       - memcached
+
+  web:
+    image: parthmodi/docker_nginx:latest
+    links:
+      - app 
+    ports:
+      - "80:80"
+    volumes: 
+      - "app-data:/home/app"
       
 volumes:
   db-data:
+  app-data:
