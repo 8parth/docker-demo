@@ -1,0 +1,108 @@
+{
+  "AWSEBDockerrunVersion": "2",
+  "volumes": [
+    {
+        "name": "app_data", 
+        "host": {
+            "sourcePath": "/home/app"
+        }
+    }
+  ],
+  "containerDefinitions": [
+      {
+        "name": "app", 
+        "image": "parthmodi/docker_demo:latest",
+        "memory": 500,
+        "portMappings": [
+            {
+                "containerPort": "3000", 
+                "hostPort": "3000", 
+                "protocol": "tcp"
+            }
+        ], 
+        "essential": true, 
+        "command": [
+            "bundle", 
+            "exec", 
+            "puma", 
+            "-C", 
+            "config/puma.rb"
+        ], 
+        "environment": [
+            { 
+                "name":"RACK_ENV",
+                "value":"production"
+            },
+            { 
+                "name":"RAILS_ENV",
+                "value":"production"
+            },
+            { 
+                "name":"REDIS_CABLE_URL",
+                "value":"redis://redis:6379/1"
+            },
+            { 
+                "name":"DATABASE_URL",
+                "value":"postgres://rnxrgascvqerwq:e2b73248305ea279d9e16e64db2e13ef7b69bcffd804d191b67ac834401b0644@ec2-23-21-224-106.compute-1.amazonaws.com:5432/d16h3i2h7kbjdd"
+            },
+            { 
+                "name":"LANG",
+                "value":"en_US.UTF-8"
+            },
+            { 
+                "name":"LOG_LEVEL",
+                "value":"debug"
+            },
+            { 
+                "name":"RAILS_LOG_TO_STDOUT",
+                "value":"enabled"
+            },
+            { 
+                "name":"RAILS_MAX_THREADS",
+                "value":"5"
+            },
+            { 
+                "name":"RAILS_SERVE_STATIC_FILES",
+                "value":"enabled"
+            },
+            { 
+                "name":"REDIS_CABLE_URL",
+                "value":"redis://h:pe5c0b0419a7de3c5db23b2fe993d0b47abfb01a8165c815561c8d8445a0d1f6d@ec2-34-206-56-163.compute-1.amazonaws.com:48809"
+            }
+        ], 
+        "mountPoints": [
+            {
+                "sourceVolume": "app_data", 
+                "containerPath": "/home/app", 
+                "readOnly": false
+            }
+        ],
+        "hostname": "app"
+      },
+      {
+        "name": "web", 
+        "image": "parthmodi/docker_nginx:latest",
+        "links": [
+            "app"
+        ],
+        "portMappings": [
+            {
+                "containerPort": "80", 
+                "hostPort": "80", 
+                "protocol": "tcp"
+            }
+        ],
+        "mountPoints": [
+            {
+                "sourceVolume": "app_data", 
+                "containerPath": "/home/app", 
+                "readOnly": true
+            }
+        ],
+        "essential": true, 
+        "hostname": "web",
+        "privileged": false,
+        "memory": 128
+    },
+  ]
+}
