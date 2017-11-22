@@ -17,7 +17,7 @@ services:
     image: redis:4.0-alpine
 
   app: &app_base
-    image: parthmodi/docker_demo:v06
+    image: parthmodi/docker_demo:latest
     environment:
       - RACK_ENV=production
       - RAILS_ENV=production
@@ -45,7 +45,7 @@ services:
     links:
       - app 
     ports:
-      - "80:80"
+      - "8080:80"
     volumes: 
       - "app-data:/home/app"
       
