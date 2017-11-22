@@ -4,7 +4,7 @@
 .git
 .gitignore
 docker-compose.yml
-Dockerfile
+
 log/*
 public/assets/*
 tmp/*
